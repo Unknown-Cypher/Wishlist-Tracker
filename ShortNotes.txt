@@ -1,0 +1,42 @@
+/home - 
+Functions
+getAllProducts
+
+Components
+Searchbar - Not functional
+ProductCard - To display all products searched
+--------------------------------------------------------
+/products/[id] - 
+Functions
+getProductById
+getSimilarProducts
+
+Components
+Modal
+PriceInforCard
+ProductCard
+
+actions/index.ts - 
+scrapeAndStoreProduct(productUrl) - calls scraper by giving the url of the product. Checks by url if it is already in the database, if yes it will update the price history, else it will get uploaded as a new product to the DB.
+
+getProductById(productid) - returns product by id of the product given to it by database.
+
+getAllProducts() - returns all products in DB as an array.
+
+getSimilarProducts(productId) - returns 3 products which are not equal to productid. 
+
+addUserEmailToProduct(productId, userEmail) - Checks if userEmail exists in product object identified by productid, if no sends him a welcome email and adds him in that product as a user.
+
+getEmailNotifType(scrapedProduct,currentProduct) - compares scrapedProduct and currentProduct on price, changeof stock, etc and returns which notification type email should be sent.
+--------------------------------------------------------------
+utils.ts - 
+extractPrice(...elements: any) - can send multiple html elements and the price in the html will be returned.
+
+
+---------------------------------------------------------
+Notes - 
+1) We try to connectToDB in all the functions dealing with the database. The function is in mongoose.js.
+2) scraper/index.ts - Uses a proxy server ('brd.superproxy.io') to send request to amazon link. Then use cheerio to process the response html.
+3) nodemailer/index.ts - 4 types of email are defined - welcome, change of stock, lowest price, threshold reached. Email bodies are written accordingly, transported object is created and the mail is sent using sendEmail(emailContent: EmailContent, sendTo: string[]) using transporter object.
+4) api/crom/route.ts - You scarpe each product present in the DB, find any changes and notify the users on changes if needed.
+---------------------------------------------------------
